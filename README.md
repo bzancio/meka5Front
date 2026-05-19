@@ -1,7 +1,9 @@
 # Meka5
 
-![Angular](https://img.shields.io/badge/Angular-21.2.11-DD0031?style=for-the-badge&logo=angular&logoColor=white)
-
+<p align="left">
+  <img src="https://img.shields.io/badge/Angular-21.2.11-DD0031?style=for-the-badge&logo=angular&logoColor=white"/>
+  <img src="https://img.shields.io/badge/License-MIT-2ea44f?style=for-the-badge"/>
+</p>
 ## Development server
 
 To start a local development server, run:
