@@ -1,6 +1,6 @@
 # Meka5
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.11.
+![Angular](https://img.shields.io/badge/Angular-21.2.11-DD0031?style=for-the-badge&logo=angular&logoColor=white)
 
 ## Development server
 
