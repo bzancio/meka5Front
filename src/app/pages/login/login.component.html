@@ -8,11 +8,11 @@
     No sé que esperabais... aún es un login básico
   </div>
 
-  <input type="text" placeholder="User" class="input" />
-  <input type="password" placeholder="Password" class="input" />
+  <input id="user" type="text" placeholder="User" class="input" />
+  <input id="pass" type="password" placeholder="Password" class="input" />
 
   <div class="button-row">
-    <button class="btn secondary">New User</button>
-    <button class="btn primary">Login</button>
+    <button class="btn secondary" (click)="newUser()">New User</button>
+    <button class="btn primary" (click)="login()">Login</button>
   </div>
 </div>
