@@ -1,12 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './shared/Header/header.component';
+import { FooterComponent } from './shared/Footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.css'
+  styleUrl: './app.component.css'
 })
-export class App {
-  protected readonly title = signal('Meka5');
-}
+export class AppComponent {}
