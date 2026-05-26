@@ -21,7 +21,7 @@ export class LoginComponent {
     this.http.post('/login', { user, password }).subscribe();
   }
 
-  newUser() {
+  goToRegister() {
     this.router.navigate(['/register']);
   }
 }

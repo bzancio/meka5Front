@@ -7,10 +7,13 @@
   <input id="user" type="text" placeholder="Usuario" class="input" />
   <input id="pass" type="password" placeholder="Contraseña" class="input" />
 
-  <div class="button-row">
-    <button class="btn secondary" (click)="newUser()">Crear cuenta</button>
-    <button class="btn primary" (click)="login()">Iniciar sesión</button>
-  </div>
+  <button class="btn primary" (click)="login()">Iniciar sesión</button>
+
+  <p class="switch-text">
+    ¿No tienes cuenta?
+    <span class="link" (click)="goToRegister()">Regístrate</span>
+  </p>
+
 </div>
 
 <app-footer></app-footer>

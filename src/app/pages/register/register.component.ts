@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,13 +12,18 @@ import { FooterComponent } from '../../shared/Footer/footer.component';
 })
 export class RegisterComponent {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   createAccount() {
-    const user = (document.querySelector('#reg-user') as HTMLInputElement).value;
-    const password = (document.querySelector('#reg-pass') as HTMLInputElement).value;
+    const user = (document.getElementById('reg-user') as HTMLInputElement).value;
+    const password = (document.getElementById('reg-pass') as HTMLInputElement).value;
 
-    this.http.post('/newUser', { user, password }).subscribe();
+    this.http.post('/newUser', { user, password }).subscribe(() => {
+      this.router.navigate(['/login']);
+    });
   }
 
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
 }

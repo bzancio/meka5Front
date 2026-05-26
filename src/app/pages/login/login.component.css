@@ -14,6 +14,7 @@
   text-align: center;
   font-size: 20px;
   margin-bottom: 10px;
+  color: #fff;
 }
 
 .input {
@@ -23,12 +24,6 @@
   font-size: 14px;
 }
 
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .btn.primary {
   padding: 10px;
   background: #0078ff;
@@ -36,23 +31,25 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  flex: 1;
 }
 
 .btn.primary:hover {
   background: #005fcc;
 }
 
-.btn.secondary {
-  padding: 10px;
-  background: #e0e0e0;
-  color: #333;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  flex: 1;
+.switch-text {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #ddd;
 }
 
-.btn.secondary:hover {
-  background: #cfcfcf;
+.link {
+  color: #4da3ff;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
