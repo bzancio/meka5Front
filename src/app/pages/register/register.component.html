@@ -1,0 +1,19 @@
+<div class="register-container">
+
+  <h2 class="title">Crear cuenta</h2>
+
+  <input id="reg-user" type="text" placeholder="Usuario" class="input" />
+  <input id="reg-pass" type="password" placeholder="Contraseña" class="input" />
+
+  <button class="btn primary" (click)="createAccount()">
+    Crear cuenta
+  </button>
+
+  <p class="switch-text">
+    ¿Ya tienes cuenta?
+    <span class="link" (click)="goToLogin()">Inicia sesión</span>
+  </p>
+
+</div>
+
+<app-footer></app-footer>

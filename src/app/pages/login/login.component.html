@@ -1,18 +1,19 @@
-<header class="header">
-  <h1>Meka5</h1>
-</header>
+<header class="header"></header>
 
 <div class="login-container">
 
-  <div class="login-text">
-    No sé que esperabais... aún es un login básico
-  </div>
+  <h2 class="title">Iniciar sesión</h2>
 
-  <input type="text" placeholder="User" class="input" />
-  <input type="password" placeholder="Password" class="input" />
+  <input id="user" type="text" placeholder="Usuario" class="input" />
+  <input id="pass" type="password" placeholder="Contraseña" class="input" />
 
-  <div class="button-row">
-    <button class="btn secondary">New User</button>
-    <button class="btn primary">Login</button>
-  </div>
+  <button class="btn primary" (click)="login()">Iniciar sesión</button>
+
+  <p class="switch-text">
+    ¿No tienes cuenta?
+    <span class="link" (click)="goToRegister()">Regístrate</span>
+  </p>
+
 </div>
+
+<app-footer></app-footer>
