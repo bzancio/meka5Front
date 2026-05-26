@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
 
@@ -11,7 +12,7 @@ import { FooterComponent } from '../../shared/Footer/footer.component';
 })
 export class LoginComponent {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login() {
     const user = (document.getElementById('user') as HTMLInputElement).value;
@@ -21,9 +22,6 @@ export class LoginComponent {
   }
 
   newUser() {
-    const user = (document.getElementById('user') as HTMLInputElement).value;
-    const password = (document.getElementById('pass') as HTMLInputElement).value;
-
-    this.http.post('/newUser', { user, password }).subscribe();
+    this.router.navigate(['/register']);
   }
 }

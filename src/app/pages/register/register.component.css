@@ -1,4 +1,4 @@
-.login-container {
+.register-container {
   max-width: 350px;
   margin: 40px auto;
   padding: 20px;
@@ -23,12 +23,6 @@
   font-size: 14px;
 }
 
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .btn.primary {
   padding: 10px;
   background: #0078ff;
@@ -36,23 +30,8 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  flex: 1;
 }
 
 .btn.primary:hover {
   background: #005fcc;
-}
-
-.btn.secondary {
-  padding: 10px;
-  background: #e0e0e0;
-  color: #333;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  flex: 1;
-}
-
-.btn.secondary:hover {
-  background: #cfcfcf;
 }
