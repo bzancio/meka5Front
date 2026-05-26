@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FooterComponent } from '../../shared/Footer/footer.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
+  imports: [FooterComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
