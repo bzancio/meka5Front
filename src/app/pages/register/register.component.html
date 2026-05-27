@@ -2,6 +2,10 @@
 
   <h2 class="title">Crear cuenta</h2>
 
+  @if (error()) {
+      <div class="alert alert-danger">{{ error() }}</div>
+    }
+
   <input id="reg-user" type="text" placeholder="Usuario" class="input" />
   <input id="reg-pass" type="password" placeholder="Contraseña" class="input" />
 

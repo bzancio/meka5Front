@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
 import { Router } from '@angular/router';
@@ -14,13 +14,21 @@ export class RegisterComponent {
 
   private http = inject(HttpClient);
   private router = inject(Router);
+  private partialUrl = 'http://localhost:8080/api';
+  protected error = signal('');
 
   createAccount() {
+    this.error.set('')
     const user = (document.getElementById('reg-user') as HTMLInputElement).value;
-    const password = (document.getElementById('reg-pass') as HTMLInputElement).value;
+    const pass = (document.getElementById('reg-pass') as HTMLInputElement).value;
 
-    this.http.post('/newUser', { user, password }).subscribe(() => {
-      this.router.navigate(['/login']);
+    this.http.post(`${this.partialUrl}/auth/register`, { username: user, password: pass }).subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) =>{
+        this.error.set('Este usuario ya existe')
+      }
     });
   }
 
