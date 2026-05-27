@@ -1,0 +1,115 @@
+.userinfo-container {
+  max-width: 350px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #ffffff10;
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.section-title {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #ffffff08;
+  border-radius: 6px;
+  border: 1px solid #ffffff15;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #fff;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn.primary {
+  padding: 10px;
+  background: #0078ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn.primary:hover {
+  background: #005fcc;
+}
+
+.btn.secondary {
+  padding: 10px;
+  background: transparent;
+  color: #4da3ff;
+  border: 1px solid #4da3ff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn.secondary:hover {
+  background: #4da3ff20;
+}
+
+.switch-text {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #ddd;
+}
+
+.link {
+  color: #4da3ff;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.alert {
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.alert-success {
+  background: #00ff8820;
+  border: 1px solid #00ff8860;
+  color: #00ff88;
+}

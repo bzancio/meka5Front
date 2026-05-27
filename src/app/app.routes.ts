@@ -6,6 +6,8 @@ import { RegisterComponent } from './pages/register/register.component';
 
 import { HomeComponent } from './pages/home/home.component';
 
+import { UserInfoComponent } from './pages/userInfo/userInfo.component';
+
 export const routes: Routes = [
   {
     path: 'login',
@@ -15,6 +17,11 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+
+   {
+    path: 'userInfo',
+      component: UserInfoComponent,
   },
 
   {
