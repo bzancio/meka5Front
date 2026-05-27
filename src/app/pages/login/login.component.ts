@@ -23,7 +23,7 @@ export class LoginComponent {
     this.error.set('');
     this.http.post<{token: string}>(`${this.partialUrl}/auth/login`, { username: user, password: pass }).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token);
+        localStorage.setItem('tokenMeka5', response.token);
         this.router.navigate(['']);
       },
       error: () =>{
