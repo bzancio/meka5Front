@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
 import { Router } from '@angular/router';
@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
 
-  constructor(private http: HttpClient, private router: Router) {}
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
   createAccount() {
     const user = (document.getElementById('reg-user') as HTMLInputElement).value;

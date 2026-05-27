@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
@@ -12,7 +12,8 @@ import { FooterComponent } from '../../shared/Footer/footer.component';
 })
 export class LoginComponent {
 
-  constructor(private http: HttpClient, private router: Router) {}
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
   login() {
     const user = (document.getElementById('user') as HTMLInputElement).value;
