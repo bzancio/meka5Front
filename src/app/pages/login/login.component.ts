@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
@@ -14,12 +14,22 @@ export class LoginComponent {
 
   private http = inject(HttpClient);
   private router = inject(Router);
+  private partialUrl = 'http://localhost:8080/api';
+  protected error = signal('');
 
   login() {
     const user = (document.getElementById('user') as HTMLInputElement).value;
-    const password = (document.getElementById('pass') as HTMLInputElement).value;
-
-    this.http.post('/login', { user, password }).subscribe();
+    const pass = (document.getElementById('pass') as HTMLInputElement).value;
+    this.error.set('');
+    this.http.post<{token: string}>(`${this.partialUrl}/auth/login`, { username: user, password: pass }).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+        this.router.navigate(['']);
+      },
+      error: () =>{
+        this.error.set('Usuario y/o contraseña incorretos');
+      }
+    });
   }
 
   goToRegister() {

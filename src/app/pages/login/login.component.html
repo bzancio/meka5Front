@@ -4,6 +4,10 @@
 
   <h2 class="title">Iniciar sesión</h2>
 
+  @if (error()) {
+      <div class="alert alert-danger">{{ error() }}</div>
+    }
+
   <input id="user" type="text" placeholder="Usuario" class="input" />
   <input id="pass" type="password" placeholder="Contraseña" class="input" />
 
