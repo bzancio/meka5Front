@@ -27,7 +27,7 @@ export class LoginComponent {
         this.router.navigate(['']);
       },
       error: () =>{
-        this.error.set('Usuario y/o contraseña incorretos');
+        this.error.set('Usuario y/o contraseña incorrectos');
       }
     });
   }
