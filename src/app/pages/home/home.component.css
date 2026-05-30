@@ -10,6 +10,7 @@
   width: 100%;
   max-width: 900px;
   padding: 0 2rem;
+  margin-top: calc(var(--header-height) + 3rem);
 }
 
 .home-test-area {
