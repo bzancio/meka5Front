@@ -14,7 +14,7 @@ export class RegisterComponent {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-  private partialUrl = 'http://localhost:8080/api';
+  private partialUrl = 'https://api-meka5.bzancio.com/api';
   protected error = signal('');
 
   createAccount() {

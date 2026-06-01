@@ -62,7 +62,7 @@ export class CommonWordsComponent implements OnInit {
     if (this.isFetching) return;
     this.isFetching = true;
 
-    this.http.get<string[]>('http://localhost:8080/api/words/sentence')
+    this.http.get<string[]>('https://api-meka5.bzancio.com/api/words/sentence')
       .subscribe({
       next: (response) => {
         const newWords = response.map(word =>
