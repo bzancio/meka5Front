@@ -12,8 +12,29 @@
 
 .options-bar {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1.25rem;
+}
+
+.options-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.options-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-subtle, #555);
+  margin-right: 0.2rem;
+  user-select: none;
+}
+
+.options-separator {
+  width: 1px;
+  height: 1rem;
+  background-color: var(--color-border);
 }
 
 .option-btn {
@@ -35,6 +56,15 @@
 
 .option-btn.active {
   color: var(--color-accent);
+}
+
+.timer {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+  line-height: 1;
 }
 
 /* ── Typing area ── */
