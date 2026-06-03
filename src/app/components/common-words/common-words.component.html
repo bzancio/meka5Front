@@ -1,4 +1,17 @@
 <div class="common-words">
+  <div class="options-bar">
+    <button
+      class="option-btn"
+      [class.active]="includePunctuation()"
+      (click)="togglePunctuation()"
+    >puntuación</button>
+    <button
+      class="option-btn"
+      [class.active]="maintainCase()"
+      (click)="toggleCase()"
+    >mayúsculas</button>
+  </div>
+
   @if (!isFinished()) {
     @if (wordList().length) {
       <section #wordsContainer class="common-words-text" aria-label="Texto del test de escritura">
