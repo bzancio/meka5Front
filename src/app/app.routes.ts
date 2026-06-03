@@ -23,7 +23,7 @@ export const routes: Routes = [
     canActivate:[authGuard],
   },
     {
-    path: 'change-credentials',
+    path: 'credentials',
     component: ChangeCredentialsComponent,
     canActivate: [authGuard],
   },

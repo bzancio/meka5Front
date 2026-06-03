@@ -42,12 +42,17 @@ export class ChangeCredentialsComponent {
     this.newPass() !== this.oldPass()
   );
 
+  protected newUserIsDifferent = computed(() =>
+    this.newUser() !== (localStorage.getItem('user') ?? '')
+  );
+
   protected formValid = computed(() =>
     cleanInvisible(this.oldPass()).length > 0 &&
     this.newUserValid() &&
     this.newPassValid() &&
     this.passwordsMatch() &&
-    this.newIsDifferent()
+    this.newIsDifferent() &&
+    this.newUserIsDifferent()
   );
 
   change() {
@@ -64,7 +69,10 @@ export class ChangeCredentialsComponent {
       newUser: this.newUser(),
       newPass: this.newPass()
     }).subscribe({
-      next: () => this.router.navigate(['/user']),
+      next: () => {
+        localStorage.setItem('user', this.newUser());
+        this.router.navigate(['/user']);
+      },
       error: () => this.error.set('La contraseña actual no es correcta')
     });
   }

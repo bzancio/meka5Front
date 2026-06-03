@@ -40,6 +40,7 @@ export class LoginComponent {
     }).subscribe({
       next: (response) => {
         this.auth.setToken(response.token);
+        localStorage.setItem('user', this.user());
         this.router.navigate(['']);
       },
       error: () => {
