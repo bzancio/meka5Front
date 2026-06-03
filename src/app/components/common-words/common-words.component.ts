@@ -32,6 +32,8 @@ export class CommonWordsComponent implements OnInit {
   currentCharIndex = signal(0);
   isFinished = signal(false);
   result = signal<TestResult | null>(null);
+  includePunctuation = signal(false);
+  maintainCase = signal(false);
 
   private isFetching = false;
   private errorsByWord = new Map<number, number>();
@@ -58,11 +60,27 @@ export class CommonWordsComponent implements OnInit {
     this.fetchWords();
   }
 
+  togglePunctuation(): void {
+    this.includePunctuation.update(v => !v);
+    this.restart();
+  }
+
+  toggleCase(): void {
+    this.maintainCase.update(v => !v);
+    this.restart();
+  }
+
   private fetchWords(): void {
     if (this.isFetching) return;
     this.isFetching = true;
 
-    this.http.get<string[]>('https://api-meka5.bzancio.com/api/words/common', {params:{size: 15}})
+    this.http.get<string[]>('https://api-meka5.bzancio.com/api/words/common', {
+      params: {
+        size: 15,
+        includePunctuation: this.includePunctuation(),
+        maintainCase: this.maintainCase()
+      }
+    })
       .subscribe({
       next: (response) => {
         const newWords = response.map(word =>

@@ -8,6 +8,35 @@
   padding: 2rem 2.5rem;
 }
 
+/* ── Options bar ── */
+
+.options-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.option-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.option-btn:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+}
+
+.option-btn.active {
+  color: var(--color-accent);
+}
+
 /* ── Typing area ── */
 
 .common-words-text {
