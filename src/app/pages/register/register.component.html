@@ -3,11 +3,12 @@
   <h2 class="title">Crear cuenta</h2>
 
   @if (error()) {
-      <div class="alert alert-danger">{{ error() }}</div>
-    }
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
 
   <input id="reg-user" type="text" placeholder="Usuario" class="input" />
   <input id="reg-pass" type="password" placeholder="Contraseña" class="input" />
+  <input id="reg-pass2" type="password" placeholder="Confirmar contraseña" class="input" />
 
   <button class="btn primary" (click)="createAccount()">
     Crear cuenta
