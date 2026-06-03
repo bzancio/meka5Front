@@ -16,7 +16,7 @@ export class UserInfoComponent {
   constructor(private router: Router) {}
 
   goToChange() {
-    this.router.navigate(['/change-credentials']);
+    this.router.navigate(['/credentials']);
   }
 
  logout() {
