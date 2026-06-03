@@ -6,11 +6,47 @@
     <div class="alert alert-danger">{{ error() }}</div>
   }
 
-  <input id="reg-user" type="text" placeholder="Usuario" class="input" />
-  <input id="reg-pass" type="password" placeholder="Contraseña" class="input" />
-  <input id="reg-pass2" type="password" placeholder="Confirmar contraseña" class="input" />
+  <input
+    type="text"
+    placeholder="Usuario"
+    class="input"
+    [value]="user()"
+    (input)="user.set($any($event.target).value); userTouched.set(true)"
+  />
 
-  <button class="btn primary" (click)="createAccount()">
+  @if (!userValid() && userTouched()) {
+    <p style="color:#ff6b6b; font-size:13px;">
+      El usuario no puede estar vacío
+    </p>
+  }
+
+  <input
+    type="password"
+    placeholder="Contraseña"
+    class="input"
+    [value]="pass()"
+    (input)="pass.set($any($event.target).value)"
+  />
+
+  <input
+    type="password"
+    placeholder="Confirmar contraseña"
+    class="input"
+    [value]="pass2()"
+    (input)="pass2.set($any($event.target).value)"
+  />
+
+  @if (!passwordsMatch() && pass2().length > 0) {
+    <p style="color:#ff6b6b; font-size:13px;">
+      Las contraseñas no coinciden
+    </p>
+  }
+
+  <button
+    class="btn primary"
+    [disabled]="!formValid()"
+    (click)="createAccount()"
+  >
     Crear cuenta
   </button>
 
