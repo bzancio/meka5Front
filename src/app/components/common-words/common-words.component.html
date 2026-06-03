@@ -1,18 +1,20 @@
 <div class="common-words">
   <div class="options-bar">
-    <button
-      class="option-btn"
-      [class.active]="includePunctuation()"
-      (click)="togglePunctuation()"
-    >puntuación</button>
-    <button
-      class="option-btn"
-      [class.active]="maintainCase()"
-      (click)="toggleCase()"
-    >mayúsculas</button>
+    <div class="options-group">
+      <span class="options-label">tiempo</span>
+      @for (t of [15, 30, 60]; track t) {
+        <button class="option-btn" [class.active]="selectedTime() === t" (click)="selectTime(t)">{{ t }}</button>
+      }
+    </div>
+    <div class="options-separator"></div>
+    <div class="options-group">
+      <button class="option-btn" [class.active]="includePunctuation()" (click)="togglePunctuation()">puntuación</button>
+      <button class="option-btn" [class.active]="maintainCase()" (click)="toggleCase()">mayúsculas</button>
+    </div>
   </div>
 
   @if (!isFinished()) {
+    <div class="timer">{{ timeLeft() }}</div>
     @if (wordList().length) {
       <section #wordsContainer class="common-words-text" aria-label="Texto del test de escritura">
         @for (word of wordList(); track $index; let wordIdx = $index) {

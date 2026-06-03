@@ -1,4 +1,4 @@
-import { Component, inject, signal, HostListener, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, signal, HostListener, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 type CharState = 'pending' | 'correct' | 'incorrect';
@@ -22,7 +22,7 @@ export interface TestResult {
   templateUrl: './common-words.component.html',
   styleUrl: './common-words.component.css'
 })
-export class CommonWordsComponent implements OnInit {
+export class CommonWordsComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
 
   @ViewChild('wordsContainer') private wordsContainer?: ElementRef<HTMLElement>;
@@ -34,8 +34,11 @@ export class CommonWordsComponent implements OnInit {
   result = signal<TestResult | null>(null);
   includePunctuation = signal(false);
   maintainCase = signal(false);
+  selectedTime = signal<number>(15);
+  timeLeft = signal<number>(15);
 
   private isFetching = false;
+  private timerInterval: ReturnType<typeof setInterval> | null = null;
   private errorsByWord = new Map<number, number>();
   private errorsByLetter = new Map<string, number>();
   private startTime: number | null = null;
@@ -46,7 +49,12 @@ export class CommonWordsComponent implements OnInit {
     this.fetchWords();
   }
 
+  ngOnDestroy(): void {
+    this.clearTimer();
+  }
+
   restart(): void {
+    this.clearTimer();
     this.wordList.set([]);
     this.currentWordIndex.set(0);
     this.currentCharIndex.set(0);
@@ -57,7 +65,13 @@ export class CommonWordsComponent implements OnInit {
     this.startTime = null;
     this.correctChars = 0;
     this.totalChars = 0;
+    this.timeLeft.set(this.selectedTime());
     this.fetchWords();
+  }
+
+  selectTime(t: number): void {
+    this.selectedTime.set(t);
+    this.restart();
   }
 
   togglePunctuation(): void {
@@ -109,13 +123,9 @@ export class CommonWordsComponent implements OnInit {
     const words = this.wordList();
     if (!words.length) return;
 
-    if (event.key === 'Enter') {
-      this.finishTest();
-      return;
-    }
-
     if (this.startTime === null && event.key.length === 1) {
       this.startTime = Date.now();
+      this.startTimer();
     }
 
     const wordIdx = this.currentWordIndex();
@@ -212,6 +222,24 @@ export class CommonWordsComponent implements OnInit {
 
     this.wordList.set(updated);
     this.currentCharIndex.set(charIdx - 1);
+  }
+
+  private startTimer(): void {
+    this.timerInterval = setInterval(() => {
+      const left = this.timeLeft() - 1;
+      this.timeLeft.set(left);
+      if (left <= 0) {
+        this.clearTimer();
+        this.finishTest();
+      }
+    }, 1000);
+  }
+
+  private clearTimer(): void {
+    if (this.timerInterval !== null) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
   }
 
   private finishTest(): void {
