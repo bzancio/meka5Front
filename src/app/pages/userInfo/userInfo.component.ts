@@ -16,4 +16,8 @@ export class UserInfoComponent {
   goToChange() {
     this.router.navigate(['/change-credentials']);
   }
+
+  back() {
+    this.router.navigate(['/home']);
+  }
 }

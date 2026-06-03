@@ -44,3 +44,17 @@
 .btn.primary:hover {
   background: #005fcc;
 }
+
+.btn.secondary {
+  background: #444;
+  color: #fff;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn.secondary:hover {
+  background: #333;
+}
