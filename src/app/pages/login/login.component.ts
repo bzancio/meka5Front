@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
@@ -17,18 +17,32 @@ export class LoginComponent {
   private router = inject(Router);
   private auth = inject(AuthService);
   private partialUrl = 'https://api-meka5.bzancio.com/api';
+
+  protected user = signal('');
+  protected pass = signal('');
   protected error = signal('');
 
+  protected formValid = computed(() =>
+    this.user().length > 0 && this.pass().length > 0
+  );
+
   login() {
-    const user = (document.getElementById('user') as HTMLInputElement).value;
-    const pass = (document.getElementById('pass') as HTMLInputElement).value;
     this.error.set('');
-    this.http.post<{token: string}>(`${this.partialUrl}/auth/login`, { username: user, password: pass }).subscribe({
+
+    if (!this.formValid()) {
+      this.error.set('Rellena todos los campos');
+      return;
+    }
+
+    this.http.post<{ token: string }>(`${this.partialUrl}/auth/login`, {
+      username: this.user(),
+      password: this.pass()
+    }).subscribe({
       next: (response) => {
         this.auth.setToken(response.token);
         this.router.navigate(['']);
       },
-      error: () =>{
+      error: () => {
         this.error.set('Usuario y/o contraseña incorrectos');
       }
     });

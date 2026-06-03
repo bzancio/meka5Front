@@ -1,14 +1,17 @@
 <div class="user-info-container">
   <div class="card">
     <h2 class="title">Tu cuenta</h2>
-    <p class="username">mario</p>
+    <p class="username">{{ username }}</p>
 
     <button class="btn primary" (click)="goToChange()">
       Cambiar credenciales
     </button>
     <button class="btn secondary" (click)="back()">
-     Volver
-  </button>
+      Volver
+    </button>
+    <button class="btn danger" (click)="logout()">
+      Cerrar sesión
+    </button>
   </div>
 </div>
 

@@ -58,3 +58,17 @@
 .btn.secondary:hover {
   background: #333;
 }
+
+.btn.danger {
+  background: #cc0000;
+  color: #fff;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn.danger:hover {
+  background: #990000;
+}

@@ -11,11 +11,18 @@ import { FooterComponent } from "../../shared/Footer/footer.component";
 })
 export class UserInfoComponent {
 
+  protected username = localStorage.getItem('user') ?? 'Usuario';
+
   constructor(private router: Router) {}
 
   goToChange() {
     this.router.navigate(['/change-credentials']);
   }
+
+ logout() {
+  localStorage.clear();
+  this.router.navigate(['/home']).then(() => window.location.reload());
+}
 
   back() {
     this.router.navigate(['/home']);
