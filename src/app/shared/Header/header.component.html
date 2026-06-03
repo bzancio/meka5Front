@@ -17,10 +17,17 @@
     </nav>
 
     <div class="header-actions">
-      <a class="header-login" routerLink="/login">
-        <span class="header-login-icon">◎</span>
-        login
-      </a>
+      @if (auth.isLoggedIn()) {
+        <a class="header-user" routerLink="/user">
+          <span class="header-user-icon">●</span>
+          usuario
+        </a>
+      } @else {
+        <a class="header-login" routerLink="/login">
+          <span class="header-login-icon">◎</span>
+          login
+        </a>
+      }
     </div>
 
   </div>

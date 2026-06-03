@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
+import { AuthService } from '../../services/Auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent {
 
   private http = inject(HttpClient);
   private router = inject(Router);
+  private auth = inject(AuthService);
   private partialUrl = 'https://api-meka5.bzancio.com/api';
   protected error = signal('');
 
@@ -23,7 +25,7 @@ export class LoginComponent {
     this.error.set('');
     this.http.post<{token: string}>(`${this.partialUrl}/auth/login`, { username: user, password: pass }).subscribe({
       next: (response) => {
-        localStorage.setItem('tokenMeka5', response.token);
+        this.auth.setToken(response.token);
         this.router.navigate(['']);
       },
       error: () =>{
