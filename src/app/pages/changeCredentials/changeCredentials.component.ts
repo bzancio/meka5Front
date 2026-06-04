@@ -1,0 +1,83 @@
+import { Component, inject, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { FooterComponent } from '../../shared/Footer/footer.component';
+
+function cleanInvisible(text: string): string {
+  return text.replace(/[\s\u200B\u00A0\u200C\u200D\uFEFF]/g, '');
+}
+
+@Component({
+  selector: 'app-changeCredentials',
+  standalone: true,
+  imports: [FooterComponent],
+  templateUrl: './changeCredentials.component.html',
+  styleUrls: ['./changeCredentials.component.css']
+})
+export class ChangeCredentialsComponent {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private partialUrl = 'https://api-meka5.bzancio.com/api';
+
+  protected oldPass = signal('');
+  protected newUser = signal('');
+  protected newPass = signal('');
+  protected newPass2 = signal('');
+
+  protected error = signal('');
+
+  protected newUserValid = computed(() =>
+    cleanInvisible(this.newUser()).length > 0
+  );
+
+  protected newPassValid = computed(() =>
+    cleanInvisible(this.newPass()).length > 0
+  );
+
+  protected passwordsMatch = computed(() =>
+    this.newPass() === this.newPass2()
+  );
+
+  protected newIsDifferent = computed(() =>
+    this.newPass() !== this.oldPass()
+  );
+
+  protected newUserIsDifferent = computed(() =>
+    this.newUser() !== (localStorage.getItem('user') ?? '')
+  );
+
+  protected formValid = computed(() =>
+    cleanInvisible(this.oldPass()).length > 0 &&
+    this.newUserValid() &&
+    this.newPassValid() &&
+    this.passwordsMatch() &&
+    this.newIsDifferent() &&
+    this.newUserIsDifferent()
+  );
+
+  change() {
+    this.error.set('');
+
+    if (!this.formValid()) {
+      this.error.set('Revisa los campos del formulario');
+      return;
+    }
+
+    this.http.post(`${this.partialUrl}/auth/change-password`, {
+      oldUser: localStorage.getItem('user'),
+      oldPass: this.oldPass(),
+      newUser: this.newUser(),
+      newPass: this.newPass()
+    }).subscribe({
+      next: () => {
+        localStorage.setItem('user', this.newUser());
+        this.router.navigate(['/user']);
+      },
+      error: () => this.error.set('La contraseña actual no es correcta')
+    });
+  }
+
+  back() {
+    this.router.navigate(['/user']);
+  }
+}

@@ -3,6 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { UserInfoComponent } from './pages/userInfo/userInfo.component';
+import { ChangeCredentialsComponent } from './pages/changeCredentials/changeCredentials.component';
 import { authGuard, noAuthGuard } from './services/Auth/auth.guard';
 
 export const routes: Routes = [
@@ -21,10 +22,16 @@ export const routes: Routes = [
     component: UserInfoComponent,
     canActivate:[authGuard],
   },
+    {
+    path: 'credentials',
+    component: ChangeCredentialsComponent,
+    canActivate: [authGuard],
+  },
   {
     path: '',
     component: HomeComponent,
   },
+
   {
     path: '**',
     redirectTo: '',
