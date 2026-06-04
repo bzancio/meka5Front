@@ -90,7 +90,7 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
 
     this.http.get<string[]>('https://api-meka5.bzancio.com/api/words/common', {
       params: {
-        size: 15,
+        size: 30,
         includePunctuation: this.includePunctuation(),
         maintainCase: this.maintainCase()
       }
