@@ -100,6 +100,15 @@
   margin-right: 0.3em;
 }
 
+.word-fade-in {
+  animation: wordFadeIn 0.6s ease both;
+}
+
+@keyframes wordFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .char {
   color: var(--color-text-muted);
   transition: color 0.05s ease;

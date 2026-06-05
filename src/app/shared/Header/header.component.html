@@ -20,7 +20,7 @@
       @if (auth.isLoggedIn()) {
         <a class="header-user" routerLink="/user">
           <span class="header-user-icon">●</span>
-          usuario
+          {{ auth.username() ?? 'usuario' }}
         </a>
       } @else {
         <a class="header-login" routerLink="/login">
