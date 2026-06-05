@@ -7,10 +7,31 @@
 .tests-container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: calc(var(--header-height) + 3rem) 2rem 3rem;
+}
+
+.tests-desc {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.tests-desc-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.tests-desc p {
+  margin: 0;
 }

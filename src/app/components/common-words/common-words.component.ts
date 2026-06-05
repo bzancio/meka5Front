@@ -282,12 +282,10 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
       const target = wordEls[wordIdx];
       if (!target) return;
 
-      const targetBottom = target.offsetTop + target.offsetHeight;
-      const containerBottom = container.scrollTop + container.clientHeight;
-
-      if (targetBottom > containerBottom) {
-        container.scrollTop = targetBottom - container.clientHeight;
-      }
+      const relativeTop = target.getBoundingClientRect().top
+                        - container.getBoundingClientRect().top
+                        + container.scrollTop;
+      container.scrollTop = relativeTop;
     }, 0);
   }
 }
