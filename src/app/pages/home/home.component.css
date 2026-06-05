@@ -53,6 +53,10 @@
   margin-bottom: 1.25rem;
 }
 
+.home-desc p {
+  margin: 0 0 0.4rem 0;
+}
+
 .home-desc-key {
   color: #e5c07b;
 }

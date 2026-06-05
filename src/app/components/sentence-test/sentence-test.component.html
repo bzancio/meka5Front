@@ -1,0 +1,74 @@
+<div class="sentence-test">
+  <div class="options-bar">
+    <div class="options-group">
+      <span class="options-label">tiempo</span>
+      @for (t of [15, 30, 60]; track t) {
+        <button class="option-btn" [class.active]="selectedTime() === t" (click)="selectTime(t)">{{ t }}</button>
+      }
+    </div>
+    <div class="options-separator"></div>
+    <div class="options-group">
+      <button class="option-btn" [class.active]="includePunctuation()" (click)="togglePunctuation()">puntuación</button>
+      <button class="option-btn" [class.active]="maintainCase()" (click)="toggleCase()">mayúsculas</button>
+    </div>
+  </div>
+
+  @if (!isFinished()) {
+    <div class="timer">{{ timeLeft() }}</div>
+    @if (wordList().length) {
+      <section #wordsContainer class="sentence-test-text" aria-label="Texto del test de escritura">
+        @for (word of wordList(); track $index; let wordIdx = $index) {
+          <span class="word">
+            @for (ch of word; track $index; let charIdx = $index) {
+              <span
+                class="char"
+                [class.correct]="ch.state === 'correct'"
+                [class.incorrect]="ch.state === 'incorrect'"
+                [class.cursor]="wordIdx === currentWordIndex() && charIdx === currentCharIndex()"
+              >{{ getDisplayChar(ch) }}</span>
+            }
+          </span>
+        }
+      </section>
+    }
+  } @else {
+    <div class="results">
+      <div class="results-stats">
+        <div class="results-stat">
+          <span class="results-label">wpm</span>
+          <span class="results-value">{{ result()!.wpm }}</span>
+        </div>
+        <div class="results-stat">
+          <span class="results-label">precisión</span>
+          <span class="results-value">{{ result()!.accuracy }}%</span>
+        </div>
+      </div>
+
+      @if (result()!.hardestWords.length) {
+        <div class="results-section">
+          <span class="results-label">palabras con más errores</span>
+          <div class="results-list">
+            @for (item of result()!.hardestWords; track $index) {
+              <span class="results-tag">{{ item.word }} <em>×{{ item.errors }}</em></span>
+            }
+          </div>
+        </div>
+      }
+
+      @if (result()!.hardestLetters.length) {
+        <div class="results-section">
+          <span class="results-label">letras más falladas</span>
+          <div class="results-list">
+            @for (item of result()!.hardestLetters; track $index) {
+              <span class="results-tag">{{ item.letter }} <em>×{{ item.count }}</em></span>
+            }
+          </div>
+        </div>
+      }
+
+      <button class="results-restart" (click)="restart()">
+        <span class="results-restart-key">tab</span> volver a empezar
+      </button>
+    </div>
+  }
+</div>

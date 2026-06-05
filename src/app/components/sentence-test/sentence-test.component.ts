@@ -17,12 +17,12 @@ export interface TestResult {
 }
 
 @Component({
-  selector: 'app-common-words',
+  selector: 'app-sentence-test',
   standalone: true,
-  templateUrl: './common-words.component.html',
-  styleUrl: './common-words.component.css'
+  templateUrl: './sentence-test.component.html',
+  styleUrl: './sentence-test.component.css'
 })
-export class CommonWordsComponent implements OnInit, OnDestroy {
+export class SentenceTestComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
 
   @ViewChild('wordsContainer') private wordsContainer?: ElementRef<HTMLElement>;
@@ -44,6 +44,8 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
   private startTime: number | null = null;
   private correctChars = 0;
   private totalChars = 0;
+
+  private readonly apiUrl = 'https://api-meka5.bzancio.com/api/words/sentence';
 
   ngOnInit(): void {
     this.fetchWords();
@@ -88,14 +90,12 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
     if (this.isFetching) return;
     this.isFetching = true;
 
-    this.http.get<string[]>('https://api-meka5.bzancio.com/api/words/common', {
+    this.http.get<string[]>(this.apiUrl, {
       params: {
-        size: 30,
         includePunctuation: this.includePunctuation(),
         maintainCase: this.maintainCase()
       }
-    })
-      .subscribe({
+    }).subscribe({
       next: (response) => {
         const newWords = response.map(word =>
           word.split('').map(char => ({ char, typed: '', state: 'pending' as CharState }))
@@ -104,7 +104,7 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
         this.isFetching = false;
       },
       error: (err) => {
-        console.error('Error fetching words', err);
+        console.error('Error fetching sentences', err);
         this.isFetching = false;
       }
     });
@@ -162,34 +162,15 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
       this.errorsByLetter.set(expectedChar, (this.errorsByLetter.get(expectedChar) ?? 0) + 1);
     }
 
-    const updated = words.map((w, wi) => {
-      if (wi !== wordIdx) {
-        return w;
-      }
-      return w.map((c, ci) => {
-        if (ci !== charIdx) {
-          return c;
-        }
-        let newState: CharState;
-        if (isCorrect) {
-          newState = 'correct';
-        } else {
-          newState = 'incorrect';
-        }
-        return { ...c, typed: key, state: newState };
-      });
-    });
+    const updated = words.map((w, wi) =>
+      wi !== wordIdx ? w : w.map((c, ci) =>
+        ci !== charIdx ? c : { ...c, typed: key, state: (isCorrect ? 'correct' : 'incorrect') as CharState }
+      )
+    );
 
     this.wordList.set(updated);
     this.currentCharIndex.set(charIdx + 1);
-
-    let scrollTarget: number;
-    if (charIdx + 1 === word.length) {
-      scrollTarget = wordIdx + 1;
-    } else {
-      scrollTarget = wordIdx;
-    }
-    this.scrollWordIntoView(scrollTarget);
+    this.scrollWordIntoView(charIdx + 1 === word.length ? wordIdx + 1 : wordIdx);
   }
 
   private handleSpace(wordIdx: number, charIdx: number, totalWords: number): void {
@@ -208,17 +189,11 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
   private handleBackspace(words: WordChar[][], wordIdx: number, charIdx: number): void {
     if (charIdx === 0) return;
 
-    const updated = words.map((w, wi) => {
-      if (wi !== wordIdx) {
-        return w;
-      }
-      return w.map((c, ci) => {
-        if (ci !== charIdx - 1) {
-          return c;
-        }
-        return { ...c, typed: '', state: 'pending' as CharState };
-      });
-    });
+    const updated = words.map((w, wi) =>
+      wi !== wordIdx ? w : w.map((c, ci) =>
+        ci !== charIdx - 1 ? c : { ...c, typed: '', state: 'pending' as CharState }
+      )
+    );
 
     this.wordList.set(updated);
     this.currentCharIndex.set(charIdx - 1);
@@ -264,13 +239,21 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
 
     this.result.set({ wpm, accuracy, hardestWords, hardestLetters });
     this.isFinished.set(true);
+
+    this.http.post('https://api-meka5.bzancio.com/api/leaderboard/register', {
+      score: wpm,
+      time: this.selectedTime(),
+      wpm,
+      token: localStorage.getItem('tokenMeka5'),
+      uppercase: this.maintainCase(),
+      punctuation: this.includePunctuation()
+    }).subscribe({
+      error: (err) => console.error('Error registering leaderboard entry', err)
+    });
   }
 
   getDisplayChar(ch: WordChar): string {
-    if (ch.state === 'incorrect') {
-      return ch.typed;
-    }
-    return ch.char;
+    return ch.state === 'incorrect' ? ch.typed : ch.char;
   }
 
   private scrollWordIntoView(wordIdx: number): void {
