@@ -1,5 +1,6 @@
 import { Component, inject, signal, HostListener, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 
 type CharState = 'pending' | 'correct' | 'incorrect';
 
@@ -36,6 +37,9 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
   maintainCase = signal(false);
   selectedTime = signal<number>(15);
   timeLeft = signal<number>(15);
+  mode = signal<'words' | 'sentences'>('words');
+  newWordsFrom = signal<number>(-1);
+  triggerFadeIn = signal(false);
 
   private isFetching = false;
   private timerInterval: ReturnType<typeof setInterval> | null = null;
@@ -45,10 +49,10 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
   private correctChars = 0;
   private totalChars = 0;
 
-  private readonly apiUrl = 'https://api-meka5.bzancio.com/api/words/sentence';
+  private readonly baseUrl = 'https://api-meka5.bzancio.com/api';
 
   ngOnInit(): void {
-    this.fetchWords();
+    this.initialFetch();
   }
 
   ngOnDestroy(): void {
@@ -68,7 +72,9 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
     this.correctChars = 0;
     this.totalChars = 0;
     this.timeLeft.set(this.selectedTime());
-    this.fetchWords();
+    this.newWordsFrom.set(-1);
+    this.triggerFadeIn.set(false);
+    this.initialFetch();
   }
 
   selectTime(t: number): void {
@@ -86,21 +92,68 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
     this.restart();
   }
 
+  selectMode(m: 'words' | 'sentences'): void {
+    this.mode.set(m);
+    this.restart();
+  }
+
+  private initialFetch(): void {
+    if (this.mode() === 'sentences') {
+      this.fetchInitialSentences();
+    } else {
+      this.fetchWords();
+    }
+  }
+
+  private fetchInitialSentences(): void {
+    if (this.isFetching) return;
+    this.isFetching = true;
+
+    const url = `${this.baseUrl}/words/sentence`;
+    const params = {
+      includePunctuation: this.includePunctuation(),
+      maintainCase: this.maintainCase()
+    };
+
+    forkJoin([
+      this.http.get<string[]>(url, { params }),
+      this.http.get<string[]>(url, { params }),
+      this.http.get<string[]>(url, { params })
+    ]).subscribe({
+      next: (results) => {
+        const newWords = results.flat().map(word =>
+          word.split('').map(char => ({ char, typed: '', state: 'pending' as CharState }))
+        );
+        this.wordList.update(current => [...current, ...newWords]);
+        this.isFetching = false;
+      },
+      error: (err) => {
+        console.error('Error fetching sentences', err);
+        this.isFetching = false;
+      }
+    });
+  }
+
   private fetchWords(): void {
     if (this.isFetching) return;
     this.isFetching = true;
 
-    this.http.get<string[]>(this.apiUrl, {
-      params: {
-        includePunctuation: this.includePunctuation(),
-        maintainCase: this.maintainCase()
-      }
-    }).subscribe({
+    const isWords = this.mode() === 'words';
+    const url = `${this.baseUrl}/words/${isWords ? 'common' : 'sentence'}`;
+    const params: Record<string, string | number | boolean> = {
+      includePunctuation: this.includePunctuation(),
+      maintainCase: this.maintainCase()
+    };
+    if (isWords) params['size'] = 30;
+
+    this.http.get<string[]>(url, { params }).subscribe({
       next: (response) => {
         const newWords = response.map(word =>
           word.split('').map(char => ({ char, typed: '', state: 'pending' as CharState }))
         );
+        const startIdx = this.wordList().length;
         this.wordList.update(current => [...current, ...newWords]);
+        if (startIdx > 0) this.newWordsFrom.set(startIdx);
         this.isFetching = false;
       },
       error: (err) => {
@@ -177,12 +230,17 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
     if (charIdx === 0) return;
     if (wordIdx + 1 >= totalWords) return;
 
-    this.currentWordIndex.set(wordIdx + 1);
+    const nextIdx = wordIdx + 1;
+    this.currentWordIndex.set(nextIdx);
     this.currentCharIndex.set(0);
-    this.scrollWordIntoView(wordIdx + 1);
+    this.scrollWordIntoView(nextIdx);
 
-    if (totalWords - (wordIdx + 1) < 5) {
-      this.fetchWords();
+    if (this.mode() === 'words') {
+      if (nextIdx === 20) this.fetchWords();
+      if (nextIdx === 25 && this.newWordsFrom() >= 0) this.triggerFadeIn.set(true);
+    } else {
+      if (nextIdx === 1) this.fetchWords();
+      if (nextIdx === 2 && this.newWordsFrom() >= 0) this.triggerFadeIn.set(true);
     }
   }
 

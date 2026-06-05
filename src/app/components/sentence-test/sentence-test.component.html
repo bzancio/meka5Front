@@ -1,6 +1,11 @@
 <div class="sentence-test">
   <div class="options-bar">
     <div class="options-group">
+      <button class="option-btn" [class.active]="mode() === 'words'" (click)="selectMode('words')">palabras</button>
+      <button class="option-btn" [class.active]="mode() === 'sentences'" (click)="selectMode('sentences')">frases</button>
+    </div>
+    <div class="options-separator"></div>
+    <div class="options-group">
       <span class="options-label">tiempo</span>
       @for (t of [15, 30, 60]; track t) {
         <button class="option-btn" [class.active]="selectedTime() === t" (click)="selectTime(t)">{{ t }}</button>
@@ -18,7 +23,10 @@
     @if (wordList().length) {
       <section #wordsContainer class="sentence-test-text" aria-label="Texto del test de escritura">
         @for (word of wordList(); track $index; let wordIdx = $index) {
-          <span class="word">
+          <span
+            class="word"
+            [class.word-fade-in]="triggerFadeIn() && newWordsFrom() >= 0 && wordIdx >= newWordsFrom()"
+          >
             @for (ch of word; track $index; let charIdx = $index) {
               <span
                 class="char"
