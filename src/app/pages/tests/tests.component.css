@@ -1,0 +1,16 @@
+.tests-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tests-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: calc(var(--header-height) + 3rem) 2rem 3rem;
+}
