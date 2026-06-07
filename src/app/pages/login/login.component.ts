@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
@@ -11,7 +11,7 @@ import { AuthService } from '../../services/Auth/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -21,6 +21,14 @@ export class LoginComponent {
   protected user = signal('');
   protected pass = signal('');
   protected error = signal('');
+
+  ngOnInit(): void {
+    const msg = this.auth.sessionExpiredMessage();
+    if (msg) {
+      this.error.set(msg);
+      this.auth.sessionExpiredMessage.set(null);
+    }
+  }
 
   protected formValid = computed(() =>
     this.user().length > 0 && this.pass().length > 0

@@ -38,11 +38,14 @@ export class RankingComponent implements OnInit {
     const name = this.filterUsername().toLowerCase().trim();
     const punct = this.filterPunctuation();
     const upper = this.filterUppercase();
+    const anyActive = punct !== null || upper !== null;
 
     return this.entries().filter(e => {
       if (name && !e.Username.toLowerCase().includes(name)) return false;
-      if (punct !== null && e.punctuation !== punct) return false;
-      if (upper !== null && e.uppercase !== upper) return false;
+      if (anyActive) {
+        if (e.punctuation !== (punct === true)) return false;
+        if (e.uppercase !== (upper === true)) return false;
+      }
       return true;
     });
   });
