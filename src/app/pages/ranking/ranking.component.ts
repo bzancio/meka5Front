@@ -30,11 +30,28 @@ export class RankingComponent implements OnInit {
   error = signal(false);
   currentPage = signal(1);
 
-  totalPages = computed(() => Math.ceil(this.entries().length / PAGE_SIZE));
+  filterUsername = signal('');
+  filterPunctuation = signal<boolean | null>(null);
+  filterUppercase = signal<boolean | null>(null);
+
+  filteredEntries = computed(() => {
+    const name = this.filterUsername().toLowerCase().trim();
+    const punct = this.filterPunctuation();
+    const upper = this.filterUppercase();
+
+    return this.entries().filter(e => {
+      if (name && !e.username.toLowerCase().includes(name)) return false;
+      if (punct !== null && e.punctuation !== punct) return false;
+      if (upper !== null && e.uppercase !== upper) return false;
+      return true;
+    });
+  });
+
+  totalPages = computed(() => Math.ceil(this.filteredEntries().length / PAGE_SIZE));
 
   pageEntries = computed(() => {
     const start = (this.currentPage() - 1) * PAGE_SIZE;
-    return this.entries().slice(start, start + PAGE_SIZE);
+    return this.filteredEntries().slice(start, start + PAGE_SIZE);
   });
 
   pageNumbers = computed(() =>
@@ -50,23 +67,26 @@ export class RankingComponent implements OnInit {
     this.currentPage.set(page);
   }
 
-  ngOnInit(): void {
-    const mock: LeaderboardEntry[] = Array.from({ length: 50 }, (_, i) => ({
-      username: `user${i + 1}`,
-      wpm: parseFloat((Math.random() * 80 + 40).toFixed(2)),
-      score: parseFloat((Math.random() * 30 + 70).toFixed(2)),
-      time: [15, 30, 60][i % 3],
-      uppercase: i % 3 === 0,
-      punctuation: i % 2 === 0
-    }));
-    this.entries.set(mock);
-    this.loading.set(false);
+  setUsername(value: string): void {
+    this.filterUsername.set(value);
+    this.currentPage.set(1);
+  }
 
-    // TODO: descomentar cuando la API esté lista
-    // this.http.get<LeaderboardEntry[]>('https://api-meka5.bzancio.com/api/leaderboard/all')
-    //   .subscribe({
-    //     next: (data) => { this.entries.set(data); this.loading.set(false); },
-    //     error: () => { this.error.set(true); this.loading.set(false); }
-    //   });
+  togglePunctuation(): void {
+    this.filterPunctuation.update(v => v === null ? true : null);
+    this.currentPage.set(1);
+  }
+
+  toggleUppercase(): void {
+    this.filterUppercase.update(v => v === null ? true : null);
+    this.currentPage.set(1);
+  }
+
+  ngOnInit(): void {
+    this.http.get<LeaderboardEntry[]>('https://api-meka5.bzancio.com/api/leaderboard/all')
+      .subscribe({
+        next: (data) => { this.entries.set(data); this.loading.set(false); },
+        error: () => { this.error.set(true); this.loading.set(false); }
+      });
   }
 }
