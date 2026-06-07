@@ -1,5 +1,6 @@
 import { Component, inject, signal, HostListener, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 
 type CharState = 'pending' | 'correct' | 'incorrect';
@@ -20,6 +21,7 @@ export interface TestResult {
 @Component({
   selector: 'app-sentence-test',
   standalone: true,
+  imports: [DecimalPipe],
   templateUrl: './sentence-test.component.html',
   styleUrl: './sentence-test.component.css'
 })
@@ -298,13 +300,15 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
     this.result.set({ wpm, accuracy, hardestWords, hardestLetters });
     this.isFinished.set(true);
 
-    this.http.post('https://api-meka5.bzancio.com/api/leaderboard/register', {
-      score: accuracy,
-      time: this.selectedTime(),
-      wpm,
-      token: localStorage.getItem('tokenMeka5'),
-      uppercase: this.maintainCase(),
-      punctuation: this.includePunctuation()
+    this.http.post('https://api-meka5.bzancio.com/api/leaderboard/register', null, {
+      params: {
+        score: parseFloat(accuracy.toFixed(2)),
+        time: this.selectedTime(),
+        wpm: parseFloat(wpm.toFixed(2)),
+        token: localStorage.getItem('tokenMeka5') ?? '',
+        uppercase: this.maintainCase(),
+        punctuation: this.includePunctuation()
+      }
     }).subscribe({
       error: (err) => console.error('Error registering leaderboard entry', err)
     });

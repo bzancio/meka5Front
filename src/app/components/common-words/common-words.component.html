@@ -36,11 +36,11 @@
       <div class="results-stats">
         <div class="results-stat">
           <span class="results-label">wpm</span>
-          <span class="results-value">{{ result()!.wpm }}</span>
+          <span class="results-value">{{ result()!.wpm | number:'1.2-2' }}</span>
         </div>
         <div class="results-stat">
           <span class="results-label">precisión</span>
-          <span class="results-value">{{ result()!.accuracy }}%</span>
+          <span class="results-value">{{ result()!.accuracy | number:'1.2-2' }}%</span>
         </div>
       </div>
 
