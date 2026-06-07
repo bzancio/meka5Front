@@ -49,7 +49,7 @@
                     @else if (globalIndex($index) === 2) { <span class="medal medal--3">◆</span> }
                     @else { {{ globalIndex($index) + 1 }} }
                   </td>
-                  <td class="col-user">{{ entry.username }}</td>
+                  <td class="col-user">{{ entry.Username }}</td>
                   <td class="col-wpm">{{ entry.wpm | number:'1.2-2' }}</td>
                   <td class="col-score">{{ entry.score | number:'1.2-2' }}%</td>
                   <td class="col-time">{{ entry.time }}s</td>
