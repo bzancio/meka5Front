@@ -10,7 +10,7 @@ interface LeaderboardEntry {
   wpm: number;
   uppercase: boolean;
   punctuation: boolean;
-  username: string;
+  Username: string;
 }
 
 const PAGE_SIZE = 10;
@@ -40,7 +40,7 @@ export class RankingComponent implements OnInit {
     const upper = this.filterUppercase();
 
     return this.entries().filter(e => {
-      if (name && !e.username.toLowerCase().includes(name)) return false;
+      if (name && !e.Username.toLowerCase().includes(name)) return false;
       if (punct !== null && e.punctuation !== punct) return false;
       if (upper !== null && e.uppercase !== upper) return false;
       return true;
