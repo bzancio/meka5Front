@@ -10,6 +10,7 @@ export class AuthService {
 
   private _token = signal<string | null>(localStorage.getItem(TOKEN_KEY));
   readonly username = signal<string | null>(null);
+  readonly sessionExpiredMessage = signal<string | null>(null);
 
   readonly isLoggedIn = computed(() => !!this._token());
 
