@@ -1,0 +1,60 @@
+<main class="ranking-page">
+  <app-header/>
+  <div class="ranking-container">
+
+    <div class="ranking-header">
+      <h1 class="ranking-title">clasificación</h1>
+    </div>
+
+    @if (loading()) {
+      <p class="ranking-status">cargando...</p>
+    } @else if (error()) {
+      <p class="ranking-status ranking-status--error">error al cargar la clasificación.</p>
+    } @else if (entries().length === 0) {
+      <p class="ranking-status">todavía no hay resultados.</p>
+    } @else {
+      <table class="ranking-table">
+        <thead>
+          <tr>
+            <th class="col-pos">#</th>
+            <th class="col-user">usuario</th>
+            <th class="col-wpm">wpm</th>
+            <th class="col-score">precisión</th>
+            <th class="col-time">tiempo</th>
+            <th class="col-flags">opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of pageEntries(); track $index) {
+            <tr [class.ranking-row--top]="globalIndex($index) < 3">
+              <td class="col-pos">
+                @if (globalIndex($index) === 0) { <span class="medal">◆</span> }
+                @else if (globalIndex($index) === 1) { <span class="medal medal--2">◆</span> }
+                @else if (globalIndex($index) === 2) { <span class="medal medal--3">◆</span> }
+                @else { {{ globalIndex($index) + 1 }} }
+              </td>
+              <td class="col-user">{{ entry.username }}</td>
+              <td class="col-wpm">{{ entry.wpm | number:'1.2-2' }}</td>
+              <td class="col-score">{{ entry.score | number:'1.2-2' }}%</td>
+              <td class="col-time">{{ entry.time }}s</td>
+              <td class="col-flags">
+                @if (entry.uppercase) { <span class="flag">Aa</span> }
+                @if (entry.punctuation) { <span class="flag">.,</span> }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <button class="page-btn" (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1">‹</button>
+        @for (n of pageNumbers(); track n) {
+          <button class="page-btn" [class.active]="n === currentPage()" (click)="goToPage(n)">{{ n }}</button>
+        }
+        <button class="page-btn" (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">›</button>
+      </div>
+    }
+
+  </div>
+  <app-footer/>
+</main>

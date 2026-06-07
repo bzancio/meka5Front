@@ -1,0 +1,141 @@
+.ranking-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ranking-container {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: calc(var(--header-height) + 3rem) 2rem 3rem;
+}
+
+.ranking-header {
+  margin-bottom: 2rem;
+}
+
+.ranking-title {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.ranking-status {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.ranking-status--error {
+  color: #e06c75;
+}
+
+/* ── Table ── */
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.ranking-table thead tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ranking-table th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.ranking-table td {
+  padding: 0.65rem 0.75rem;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ranking-row--top td {
+  color: var(--color-accent);
+}
+
+/* ── Column widths ── */
+
+.col-pos  { width: 3rem;  text-align: center; }
+.col-user { }
+.col-wpm  { width: 6rem;  text-align: right; }
+.col-score{ width: 7rem;  text-align: right; }
+.col-time { width: 5rem;  text-align: right; }
+.col-flags{ width: 5rem;  text-align: center; }
+
+/* ── Medals ── */
+
+.medal {
+  font-size: 0.9rem;
+  color: #e5c07b;
+}
+
+.medal--2 {
+  color: #abb2bf;
+}
+
+.medal--3 {
+  color: #c08050;
+}
+
+/* ── Pagination ── */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 1.75rem;
+}
+
+.page-btn {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  min-width: 2rem;
+}
+
+.page-btn:hover:not(:disabled) {
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+.page-btn.active {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.page-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+/* ── Option flags ── */
+
+.flag {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  margin: 0 0.1rem;
+}
