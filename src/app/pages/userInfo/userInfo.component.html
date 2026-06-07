@@ -1,20 +1,146 @@
-<div class="user-info-container">
-  <div class="card">
-    <h2 class="title">Tu cuenta</h2>
-    <p class="username">{{ username }}</p>
+<main class="user-page">
+  <app-header />
 
-    <button class="btn primary" (click)="goToChange()">
-      Cambiar credenciales
-    </button>
+  <nav class="user-nav">
+    <div class="user-nav-inner">
+      <button class="user-nav-btn" [class.active]="activeTab() === 'ranking'" (click)="activeTab.set('ranking')">
+        Ranking personal
+      </button>
+      <button class="user-nav-btn" [class.active]="activeTab() === 'info'" (click)="activeTab.set('info')">
+        Cambiar información
+      </button>
+    </div>
+  </nav>
 
-    <button class="btn danger" (click)="logout()">
-      Cerrar sesión
-    </button>
+  <div class="user-container">
+
+    @if (activeTab() === 'ranking') {
+      <div class="filters">
+        <button class="filter-btn" [class.active]="filterPunctuation() !== null" (click)="togglePunctuation()">Puntuación</button>
+        <button class="filter-btn" [class.active]="filterUppercase() !== null" (click)="toggleUppercase()">Mayúsculas</button>
+        <div class="filter-sep"></div>
+        <span class="filter-label">Tiempo</span>
+        @for (t of [15, 30, 60]; track t) {
+          <button class="filter-btn" [class.active]="filterTime() === t" (click)="selectTime(t)">{{ t }}s</button>
+        }
+      </div>
+
+      @if (avgAverage() !== null || avgScore() !== null) {
+        <div class="stats-bar">
+          @if (avgAverage() !== null) {
+            <div class="stat">
+              <span class="stat-label">Media total</span>
+              <span class="stat-value">{{ avgAverage() | number:'1.2-2' }}</span>
+            </div>
+          }
+          @if (avgScore() !== null) {
+            <div class="stat">
+              <span class="stat-label">Media de precisión</span>
+              <span class="stat-value">{{ avgScore() | number:'1.2-2' }}%</span>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="ranking-card">
+        <div class="ranking-body">
+          @if (loading()) {
+            <p class="ranking-status">Cargando...</p>
+          } @else if (error()) {
+            <p class="ranking-status ranking-status--error">Error al cargar el ranking personal.</p>
+          } @else if (entries().length === 0) {
+            <p class="ranking-status">Todavía no tienes resultados.</p>
+          } @else if (filteredEntries().length === 0) {
+            <p class="ranking-status">Ningún resultado coincide con los filtros.</p>
+          } @else {
+            <table class="ranking-table">
+              <thead>
+                <tr>
+                  <th class="col-pos">#</th>
+                  <th class="col-wpm">WPM</th>
+                  <th class="col-score">Precisión</th>
+                  <th class="col-avg">Media</th>
+                  <th class="col-time">Tiempo</th>
+                  <th class="col-flags">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (entry of pageEntries(); track $index) {
+                  <tr>
+                    <td class="col-pos">{{ globalIndex($index) + 1 }}</td>
+                    <td class="col-wpm">{{ entry.wpm | number:'1.2-2' }}</td>
+                    <td class="col-score">{{ entry.score | number:'1.2-2' }}%</td>
+                    <td class="col-avg">{{ entry.average | number:'1.2-2' }}</td>
+                    <td class="col-time">{{ entry.time }}s</td>
+                    <td class="col-flags">
+                      @if (entry.uppercase) { <span class="flag">Aa</span> }
+                      @if (entry.punctuation) { <span class="flag">.,</span> }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <div class="pagination">
+          <button class="page-btn" (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1">‹</button>
+          @for (n of pageNumbers(); track n) {
+            <button class="page-btn" [class.active]="n === currentPage()" (click)="goToPage(n)">{{ n }}</button>
+          }
+          <button class="page-btn" (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">›</button>
+        </div>
+      </div>
+    }
+
+    @if (activeTab() === 'info') {
+      <div class="info-card" (keydown.enter)="change()">
+        <h2 class="info-title">Tu cuenta</h2>
+        <p class="info-username">{{ username }}</p>
+
+        @if (changeError()) {
+          <div class="info-alert">{{ changeError() }}</div>
+        }
+
+        <div class="pass-wrap">
+          <input [type]="showOldPass() ? 'text' : 'password'" placeholder="Contraseña actual"
+            class="info-input" [value]="oldPass()" (input)="oldPass.set($any($event.target).value)" />
+          <button type="button" class="pass-toggle" (click)="showOldPass.update(v => !v)">{{ showOldPass() ? '●' : '◎' }}</button>
+        </div>
+
+        <input type="text" placeholder="Nuevo usuario" class="info-input"
+          [value]="newUser()" (input)="newUser.set($any($event.target).value)" />
+        @if (!newUserValid() && newUser().length > 0) {
+          <p class="info-error">El usuario no puede estar vacío</p>
+        }
+        @if (!newUserIsDifferent() && newUser().length > 0) {
+          <p class="info-error">El nuevo usuario no puede ser igual que el actual</p>
+        }
+
+        <div class="pass-wrap">
+          <input [type]="showNewPass() ? 'text' : 'password'" placeholder="Nueva contraseña"
+            class="info-input" [value]="newPass()" (input)="newPass.set($any($event.target).value)" />
+          <button type="button" class="pass-toggle" (click)="showNewPass.update(v => !v)">{{ showNewPass() ? '●' : '◎' }}</button>
+        </div>
+
+        <div class="pass-wrap">
+          <input [type]="showNewPass2() ? 'text' : 'password'" placeholder="Confirmar nueva contraseña"
+            class="info-input" [value]="newPass2()" (input)="newPass2.set($any($event.target).value)" />
+          <button type="button" class="pass-toggle" (click)="showNewPass2.update(v => !v)">{{ showNewPass2() ? '●' : '◎' }}</button>
+        </div>
+        @if (!passwordsMatch() && newPass2().length > 0) {
+          <p class="info-error">Las contraseñas no coinciden</p>
+        }
+        @if (!newIsDifferent() && newPass().length > 0) {
+          <p class="info-error">La nueva contraseña no puede ser igual que la antigua</p>
+        }
+
+        <button class="btn primary" [disabled]="!formValid()" (click)="change()">Guardar cambios</button>
+        <button class="btn danger" (click)="logout()">Cerrar sesión</button>
+      </div>
+    }
+
   </div>
 
-  <button class="btn link" (click)="back()">
-    ← Volver
-  </button>
-</div>
-
-<app-footer></app-footer>
+  <app-footer />
+</main>

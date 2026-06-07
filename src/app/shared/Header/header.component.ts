@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthService } from '../../services/Auth/auth.service';
 
 @Component({
@@ -14,8 +15,23 @@ export class HeaderComponent {
   private router = inject(Router);
 
   protected showEasterEgg = signal(false);
+  protected isUserPage = signal(false);
   private clickCount = 0;
   private lastClickTime = 0;
+
+  constructor() {
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(e => {
+      this.isUserPage.set((e as NavigationEnd).url === '/user');
+    });
+  }
+
+  logout(): void {
+    this.auth.logout();
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
+  }
 
   onLogoClick(event: Event): void {
     event.preventDefault();

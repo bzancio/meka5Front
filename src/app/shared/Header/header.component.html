@@ -25,10 +25,14 @@
 
     <div class="header-actions">
       @if (auth.isLoggedIn()) {
-        <a class="header-user" routerLink="/user">
-          <span class="header-user-icon">👤</span>
-          {{ auth.username() ?? 'usuario' }}
-        </a>
+        @if (isUserPage()) {
+          <button class="header-logout" (click)="logout()">🔴 cerrar sesión</button>
+        } @else {
+          <a class="header-user" routerLink="/user">
+            <span class="header-user-icon">👤</span>
+            {{ auth.username() ?? 'usuario' }}
+          </a>
+        }
       } @else {
         <a class="header-login" routerLink="/login">
           <span class="header-login-icon">◎</span>
