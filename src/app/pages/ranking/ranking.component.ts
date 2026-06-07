@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
 import { HeaderComponent } from '../../shared/Header/header.component';
 import { FooterComponent } from '../../shared/Footer/footer.component';
+import { environment } from '../../../environments/environment';
 
 interface LeaderboardEntry {
   score: number;
@@ -33,19 +34,22 @@ export class RankingComponent implements OnInit {
   filterUsername = signal('');
   filterPunctuation = signal<boolean | null>(null);
   filterUppercase = signal<boolean | null>(null);
+  filterTime = signal<number | null>(null);
 
   filteredEntries = computed(() => {
     const name = this.filterUsername().toLowerCase().trim();
     const punct = this.filterPunctuation();
     const upper = this.filterUppercase();
-    const anyActive = punct !== null || upper !== null;
+    const time = this.filterTime();
+    const anyFlagActive = punct !== null || upper !== null;
 
     return this.entries().filter(e => {
       if (name && !e.Username.toLowerCase().includes(name)) return false;
-      if (anyActive) {
+      if (anyFlagActive) {
         if (e.punctuation !== (punct === true)) return false;
         if (e.uppercase !== (upper === true)) return false;
       }
+      if (time !== null && e.time !== time) return false;
       return true;
     });
   });
@@ -85,8 +89,13 @@ export class RankingComponent implements OnInit {
     this.currentPage.set(1);
   }
 
+  selectTime(t: number): void {
+    this.filterTime.update(v => v === t ? null : t);
+    this.currentPage.set(1);
+  }
+
   ngOnInit(): void {
-    this.http.get<LeaderboardEntry[]>('https://api-meka5.bzancio.com/api/leaderboard/all')
+    this.http.get<LeaderboardEntry[]>(`${environment.apiUrl}/leaderboard/all`)
       .subscribe({
         next: (data) => { this.entries.set(data); this.loading.set(false); },
         error: () => { this.error.set(true); this.loading.set(false); }

@@ -3,7 +3,7 @@
   <div class="ranking-container">
 
     <div class="ranking-header">
-      <h1 class="ranking-title">clasificación</h1>
+      <h1 class="ranking-title">Ranking</h1>
     </div>
 
     <div class="filters">
@@ -14,8 +14,13 @@
         (input)="setUsername($any($event.target).value)"
       />
       <div class="filter-sep"></div>
-      <button class="filter-btn" [class.active]="filterPunctuation() !== null" (click)="togglePunctuation()">puntuación</button>
-      <button class="filter-btn" [class.active]="filterUppercase() !== null" (click)="toggleUppercase()">mayúsculas</button>
+      <button class="filter-btn" [class.active]="filterPunctuation() !== null" (click)="togglePunctuation()">Puntuación</button>
+      <button class="filter-btn" [class.active]="filterUppercase() !== null" (click)="toggleUppercase()">Mayúsculas</button>
+      <div class="filter-sep"></div>
+      <span class="filter-label">Tiempo</span>
+      @for (t of [15, 30, 60]; track t) {
+        <button class="filter-btn" [class.active]="filterTime() === t" (click)="selectTime(t)">{{ t }}s</button>
+      }
     </div>
 
     <div class="ranking-card">
@@ -23,7 +28,7 @@
         @if (loading()) {
           <p class="ranking-status">cargando...</p>
         } @else if (error()) {
-          <p class="ranking-status ranking-status--error">error al cargar la clasificación.</p>
+          <p class="ranking-status ranking-status--error">error al cargar el ranking.</p>
         } @else if (entries().length === 0) {
           <p class="ranking-status">todavía no hay resultados.</p>
         } @else if (filteredEntries().length === 0) {
@@ -36,7 +41,7 @@
                 <th class="col-user">usuario</th>
                 <th class="col-wpm">wpm</th>
                 <th class="col-score">precisión</th>
-                <th class="col-time">tiempo</th>
+                <th class="col-time">Tiempo</th>
                 <th class="col-flags">opciones</th>
               </tr>
             </thead>

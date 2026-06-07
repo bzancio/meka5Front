@@ -34,7 +34,6 @@
   color: #e06c75;
 }
 
-/* ── Card ── */
 
 .ranking-card {
   display: flex;
@@ -51,7 +50,6 @@
   flex: 1;
 }
 
-/* ── Filters ── */
 
 .filters {
   display: flex;
@@ -88,6 +86,13 @@
   margin: 0 0.25rem;
 }
 
+.filter-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  user-select: none;
+}
+
 .filter-btn {
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -109,7 +114,6 @@
   color: var(--color-accent);
 }
 
-/* ── Table ── */
 
 .ranking-table {
   width: 100%;
@@ -141,7 +145,6 @@
   color: var(--color-accent);
 }
 
-/* ── Column widths ── */
 
 .col-pos  { width: 3rem;  text-align: center; }
 .col-user { }
@@ -150,7 +153,6 @@
 .col-time { width: 5rem;  text-align: right; }
 .col-flags{ width: 5rem;  text-align: center; }
 
-/* ── Medals ── */
 
 .medal {
   font-size: 0.9rem;
@@ -165,7 +167,6 @@
   color: #c08050;
 }
 
-/* ── Pagination ── */
 
 .pagination {
   display: flex;
@@ -203,7 +204,6 @@
   cursor: default;
 }
 
-/* ── Option flags ── */
 
 .flag {
   display: inline-block;

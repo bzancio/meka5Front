@@ -1,21 +1,8 @@
 import { Component, inject, signal, HostListener, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
-
-type CharState = 'pending' | 'correct' | 'incorrect';
-
-interface WordChar {
-  char: string;
-  typed: string;
-  state: CharState;
-}
-
-export interface TestResult {
-  wpm: number;
-  accuracy: number;
-  hardestWords: { word: string; errors: number }[];
-  hardestLetters: { letter: string; count: number }[];
-}
+import { environment } from '../../../environments/environment';
+import { CharState, WordChar, TestResult } from '../../shared/models/test.model';
 
 @Component({
   selector: 'app-common-words',
@@ -90,7 +77,7 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
     if (this.isFetching) return;
     this.isFetching = true;
 
-    this.http.get<string[]>('https://api-meka5.bzancio.com/api/words/common', {
+    this.http.get<string[]>(`${environment.apiUrl}/words/common`, {
       params: {
         size: 30,
         includePunctuation: this.includePunctuation(),

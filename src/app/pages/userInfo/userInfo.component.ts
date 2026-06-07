@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FooterComponent } from "../../shared/Footer/footer.component";
+import { FooterComponent } from '../../shared/Footer/footer.component';
+import { AuthService } from '../../services/Auth/auth.service';
 
 @Component({
   selector: 'app-userInfo',
@@ -10,21 +11,22 @@ import { FooterComponent } from "../../shared/Footer/footer.component";
   imports: [FooterComponent],
 })
 export class UserInfoComponent {
+  private router = inject(Router);
+  private auth = inject(AuthService);
 
   protected username = localStorage.getItem('user') ?? 'Usuario';
-
-  constructor(private router: Router) {}
 
   goToChange() {
     this.router.navigate(['/credentials']);
   }
 
- logout() {
-  localStorage.clear();
-  this.router.navigate(['/home']).then(() => window.location.reload());
-}
+  logout() {
+    this.auth.logout();
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
+  }
 
   back() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['']);
   }
 }

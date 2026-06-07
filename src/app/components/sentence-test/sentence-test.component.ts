@@ -2,21 +2,8 @@ import { Component, inject, signal, HostListener, OnInit, OnDestroy, ViewChild, 
 import { HttpClient } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
-
-type CharState = 'pending' | 'correct' | 'incorrect';
-
-interface WordChar {
-  char: string;
-  typed: string;
-  state: CharState;
-}
-
-export interface TestResult {
-  wpm: number;
-  accuracy: number;
-  hardestWords: { word: string; errors: number }[];
-  hardestLetters: { letter: string; count: number }[];
-}
+import { environment } from '../../../environments/environment';
+import { CharState, WordChar, TestResult } from '../../shared/models/test.model';
 
 @Component({
   selector: 'app-sentence-test',
@@ -51,7 +38,7 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
   private correctChars = 0;
   private totalChars = 0;
 
-  private readonly baseUrl = 'https://api-meka5.bzancio.com/api';
+  private readonly baseUrl = environment.apiUrl;
 
   ngOnInit(): void {
     this.initialFetch();
@@ -300,7 +287,7 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
     this.result.set({ wpm, accuracy, hardestWords, hardestLetters });
     this.isFinished.set(true);
 
-    this.http.post('https://api-meka5.bzancio.com/api/leaderboard/register', {
+    this.http.post(`${environment.apiUrl}/leaderboard/register`, {
       score: parseFloat(accuracy.toFixed(2)),
       time: this.selectedTime(),
       wpm: parseFloat(wpm.toFixed(2)),

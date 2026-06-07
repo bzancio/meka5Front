@@ -2,10 +2,8 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FooterComponent } from '../../shared/Footer/footer.component';
-
-function cleanInvisible(text: string): string {
-  return text.replace(/[\s\u200B\u00A0\u200C\u200D\uFEFF]/g, '');
-}
+import { environment } from '../../../environments/environment';
+import { cleanInvisible } from '../../shared/utils/text.utils';
 
 @Component({
   selector: 'app-changeCredentials',
@@ -17,13 +15,14 @@ function cleanInvisible(text: string): string {
 export class ChangeCredentialsComponent {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private partialUrl = 'https://api-meka5.bzancio.com/api';
 
   protected oldPass = signal('');
   protected newUser = signal('');
   protected newPass = signal('');
   protected newPass2 = signal('');
-
+  protected showOldPass = signal(false);
+  protected showNewPass = signal(false);
+  protected showNewPass2 = signal(false);
   protected error = signal('');
 
   protected newUserValid = computed(() =>
@@ -63,15 +62,25 @@ export class ChangeCredentialsComponent {
       return;
     }
 
-    this.http.post(`${this.partialUrl}/auth/change-password`, {
-      oldUser: localStorage.getItem('user'),
-      oldPass: this.oldPass(),
-      newUser: this.newUser(),
-      newPass: this.newPass()
+    const currentUser = localStorage.getItem('user') ?? '';
+
+    this.http.post<{ token: string }>(`${environment.apiUrl}/auth/login`, {
+      username: currentUser,
+      password: this.oldPass()
     }).subscribe({
       next: () => {
-        localStorage.setItem('user', this.newUser());
-        this.router.navigate(['/user']);
+        this.http.post(`${environment.apiUrl}/auth/change-password`, {
+          currentUsername: currentUser,
+          currentPassword: this.oldPass(),
+          newUsername: this.newUser(),
+          newPassword: this.newPass()
+        }).subscribe({
+          next: () => {
+            localStorage.setItem('user', this.newUser());
+            this.router.navigate(['/user']);
+          },
+          error: () => this.error.set('Error al cambiar las credenciales')
+        });
       },
       error: () => this.error.set('La contraseña actual no es correcta')
     });

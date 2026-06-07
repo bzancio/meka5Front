@@ -2,6 +2,7 @@
 
 <div class="login-container" (keydown.enter)="login()">
 
+  <img class="login-logo" src="background.png" alt="Meka5" />
   <h2 class="title">Iniciar sesión</h2>
 
   @if (error()) {
@@ -16,13 +17,18 @@
     (input)="user.set($any($event.target).value)"
   />
 
-  <input
-    type="password"
-    placeholder="Contraseña"
-    class="input"
-    [value]="pass()"
-    (input)="pass.set($any($event.target).value)"
-  />
+  <div class="pass-wrap">
+    <input
+      [type]="showPass() ? 'text' : 'password'"
+      placeholder="Contraseña"
+      class="input"
+      [value]="pass()"
+      (input)="pass.set($any($event.target).value)"
+    />
+    <button type="button" class="pass-toggle" (click)="showPass.update(v => !v)">
+      {{ showPass() ? '●' : '◎' }}
+    </button>
+  </div>
 
   <button
     class="btn primary"
@@ -35,6 +41,10 @@
   <p class="switch-text">
     ¿No tienes cuenta?
     <span class="link" (click)="goToRegister()">Regístrate</span>
+  </p>
+
+  <p class="switch-text">
+    <span class="link" (click)="goToHome()">← Volver al inicio</span>
   </p>
 
 </div>

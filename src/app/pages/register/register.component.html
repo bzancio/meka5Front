@@ -1,5 +1,6 @@
 <div class="register-container" (keydown.enter)="createAccount()">
 
+  <img class="register-logo" src="background.png" alt="Meka5" />
   <h2 class="title">Crear cuenta</h2>
 
   @if (error()) {
@@ -15,31 +16,37 @@
   />
 
   @if (!userValid() && userTouched()) {
-    <p style="color:#ff6b6b; font-size:13px;">
-      El usuario no puede estar vacío
-    </p>
+    <p class="msg-error">El usuario no puede estar vacío</p>
   }
 
-  <input
-    type="password"
-    placeholder="Contraseña"
-    class="input"
-    [value]="pass()"
-    (input)="pass.set($any($event.target).value)"
-  />
+  <div class="pass-wrap">
+    <input
+      [type]="showPass() ? 'text' : 'password'"
+      placeholder="Contraseña"
+      class="input"
+      [value]="pass()"
+      (input)="pass.set($any($event.target).value)"
+    />
+    <button type="button" class="pass-toggle" (click)="showPass.update(v => !v)">
+      {{ showPass() ? '●' : '◎' }}
+    </button>
+  </div>
 
-  <input
-    type="password"
-    placeholder="Confirmar contraseña"
-    class="input"
-    [value]="pass2()"
-    (input)="pass2.set($any($event.target).value)"
-  />
+  <div class="pass-wrap">
+    <input
+      [type]="showPass2() ? 'text' : 'password'"
+      placeholder="Confirmar contraseña"
+      class="input"
+      [value]="pass2()"
+      (input)="pass2.set($any($event.target).value)"
+    />
+    <button type="button" class="pass-toggle" (click)="showPass2.update(v => !v)">
+      {{ showPass2() ? '●' : '◎' }}
+    </button>
+  </div>
 
   @if (!passwordsMatch() && pass2().length > 0) {
-    <p style="color:#ff6b6b; font-size:13px;">
-      Las contraseñas no coinciden
-    </p>
+    <p class="msg-error">Las contraseñas no coinciden</p>
   }
 
   <button
@@ -53,6 +60,10 @@
   <p class="switch-text">
     ¿Ya tienes cuenta?
     <span class="link" (click)="goToLogin()">Inicia sesión</span>
+  </p>
+
+  <p class="switch-text">
+    <span class="link" (click)="goToHome()">← Volver al inicio</span>
   </p>
 
 </div>

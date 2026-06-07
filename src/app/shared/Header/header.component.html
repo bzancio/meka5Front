@@ -1,24 +1,32 @@
+<img src="5.png" alt="" aria-hidden="true" class="easter-preload" />
+
+@if (showEasterEgg()) {
+  <div class="easter-overlay">
+    <img src="5.png" alt="5" />
+  </div>
+}
+
 <header class="header">
   <div class="header-inner">
 
-    <a class="header-logo" routerLink="/">
-      <img class="header-logo-icon" src="background.png" alt="Meka5 logo" />
+    <span class="header-logo" (click)="onLogoClick($event)">
+      <span class="header-logo-icon">⌨</span>
       <span class="header-logo-text">Meka5</span>
-    </a>
+    </span>
 
     <nav class="header-nav" aria-label="Navegación principal">
       <a class="header-nav-link" routerLink="/tests" routerLinkActive="header-nav-link-active">
-        tests
+        Tests
       </a>
       <a class="header-nav-link" routerLink="/ranking" routerLinkActive="header-nav-link-active">
-        ranking
+        Ranking
       </a>
     </nav>
 
     <div class="header-actions">
       @if (auth.isLoggedIn()) {
         <a class="header-user" routerLink="/user">
-          <span class="header-user-icon">●</span>
+          <span class="header-user-icon">👤</span>
           {{ auth.username() ?? 'usuario' }}
         </a>
       } @else {

@@ -1,20 +1,20 @@
 <div class="sentence-test">
   <div class="options-bar">
     <div class="options-group">
-      <button class="option-btn" [class.active]="mode() === 'words'" (click)="selectMode('words')">palabras</button>
-      <button class="option-btn" [class.active]="mode() === 'sentences'" (click)="selectMode('sentences')">frases</button>
+      <button class="option-btn" [class.active]="mode() === 'words'" (click)="selectMode('words')">Palabras</button>
+      <button class="option-btn" [class.active]="mode() === 'sentences'" (click)="selectMode('sentences')">Frases</button>
     </div>
     <div class="options-separator"></div>
     <div class="options-group">
-      <span class="options-label">tiempo</span>
+      <span class="options-label">Tiempo</span>
       @for (t of [15, 30, 60]; track t) {
         <button class="option-btn" [class.active]="selectedTime() === t" (click)="selectTime(t)">{{ t }}</button>
       }
     </div>
     <div class="options-separator"></div>
     <div class="options-group">
-      <button class="option-btn" [class.active]="includePunctuation()" (click)="togglePunctuation()">puntuación</button>
-      <button class="option-btn" [class.active]="maintainCase()" (click)="toggleCase()">mayúsculas</button>
+      <button class="option-btn" [class.active]="includePunctuation()" (click)="togglePunctuation()">Puntuación</button>
+      <button class="option-btn" [class.active]="maintainCase()" (click)="toggleCase()">Mayúsculas</button>
     </div>
   </div>
 
@@ -43,18 +43,18 @@
     <div class="results">
       <div class="results-stats">
         <div class="results-stat">
-          <span class="results-label">wpm</span>
+          <span class="results-label">WPM</span>
           <span class="results-value">{{ result()!.wpm | number:'1.2-2' }}</span>
         </div>
         <div class="results-stat">
-          <span class="results-label">precisión</span>
+          <span class="results-label">Precisión</span>
           <span class="results-value">{{ result()!.accuracy | number:'1.2-2' }}%</span>
         </div>
       </div>
 
       @if (result()!.hardestWords.length) {
         <div class="results-section">
-          <span class="results-label">palabras con más errores</span>
+          <span class="results-label">Palabras con más errores</span>
           <div class="results-list">
             @for (item of result()!.hardestWords; track $index) {
               <span class="results-tag">{{ item.word }} <em>×{{ item.errors }}</em></span>
@@ -65,7 +65,7 @@
 
       @if (result()!.hardestLetters.length) {
         <div class="results-section">
-          <span class="results-label">letras más falladas</span>
+          <span class="results-label">Letras más falladas</span>
           <div class="results-list">
             @for (item of result()!.hardestLetters; track $index) {
               <span class="results-tag">{{ item.letter }} <em>×{{ item.count }}</em></span>
@@ -75,7 +75,7 @@
       }
 
       <button class="results-restart" (click)="restart()">
-        <span class="results-restart-key">tab</span> volver a empezar
+        <span class="results-restart-key">tab</span> Volver a empezar
       </button>
     </div>
   }

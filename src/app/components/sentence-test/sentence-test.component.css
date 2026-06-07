@@ -8,8 +8,6 @@
   padding: 2rem 2.5rem;
 }
 
-/* ── Options bar ── */
-
 .options-bar {
   display: flex;
   align-items: center;
@@ -58,8 +56,6 @@
   color: var(--color-accent);
 }
 
-/* ── Timer ── */
-
 .timer {
   font-family: var(--font-mono);
   font-size: 1.5rem;
@@ -68,8 +64,6 @@
   margin-bottom: 0.75rem;
   line-height: 1;
 }
-
-/* ── Typing area ── */
 
 .sentence-test-text {
   display: block;
@@ -139,8 +133,6 @@
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
-
-/* ── Results ── */
 
 .results {
   display: flex;

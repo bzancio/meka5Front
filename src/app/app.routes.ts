@@ -1,4 +1,4 @@
-import { Routes, CanActivateFn } from '@angular/router';
+import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -6,6 +6,7 @@ import { UserInfoComponent } from './pages/userInfo/userInfo.component';
 import { ChangeCredentialsComponent } from './pages/changeCredentials/changeCredentials.component';
 import { TestsComponent } from './pages/tests/tests.component';
 import { RankingComponent } from './pages/ranking/ranking.component';
+import { FiveComponent } from './shared/Header/5.component';
 import { authGuard, noAuthGuard } from './services/Auth/auth.guard';
 
 export const routes: Routes = [
@@ -38,6 +39,10 @@ export const routes: Routes = [
     path: 'ranking',
     component: RankingComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: '5',
+    component: FiveComponent,
   },
   {
     path: '',

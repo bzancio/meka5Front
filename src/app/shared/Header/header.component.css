@@ -1,3 +1,23 @@
+.easter-preload {
+  display: none;
+}
+
+.easter-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+.easter-overlay img {
+  max-width: 100vw;
+  max-height: 100vh;
+  object-fit: contain;
+}
+
 .header {
   position: fixed;
   top: 0;
@@ -18,13 +38,14 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .header-logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex: 1;
+  cursor: pointer;
   text-decoration: none;
   color: var(--color-text-primary);
   font-size: 1.25rem;
@@ -38,9 +59,8 @@
 }
 
 .header-logo-icon {
-  width: 1.6rem;
-  height: 1.6rem;
-  object-fit: contain;
+  font-size: 1.4rem;
+  line-height: 1;
 }
 
 .header-logo-text {
@@ -76,7 +96,8 @@
 .header-actions {
   display: flex;
   align-items: center;
-  margin-left: auto;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 .header-login {

@@ -65,9 +65,9 @@
 }
 
 .home-desc-key {
-  color: #e5c07b;
+  color: var(--color-warning);
 }
 
 .home-desc-warn {
-  color: #e06c75;
+  color: var(--color-error);
 }

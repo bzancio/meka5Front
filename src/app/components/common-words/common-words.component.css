@@ -8,8 +8,6 @@
   padding: 2rem 2.5rem;
 }
 
-/* ── Options bar ── */
-
 .options-bar {
   display: flex;
   align-items: center;
@@ -66,8 +64,6 @@
   margin-bottom: 0.75rem;
   line-height: 1;
 }
-
-/* ── Typing area ── */
 
 .common-words-text {
   display: block;
@@ -128,8 +124,6 @@
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
-
-/* ── Results ── */
 
 .results {
   display: flex;

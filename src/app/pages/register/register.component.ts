@@ -2,10 +2,8 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FooterComponent } from '../../shared/Footer/footer.component';
 import { Router } from '@angular/router';
-
-function cleanInvisible(text: string): string {
-  return text.replace(/[\s\u200B\u00A0\u200C\u200D\uFEFF]/g, '');
-}
+import { environment } from '../../../environments/environment';
+import { cleanInvisible } from '../../shared/utils/text.utils';
 
 @Component({
   selector: 'app-register',
@@ -18,15 +16,14 @@ export class RegisterComponent {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-  private partialUrl = 'https://api-meka5.bzancio.com/api';
 
   protected user = signal('');
   protected userTouched = signal(false);
-
   protected pass = signal('');
   protected pass2 = signal('');
-
   protected error = signal('');
+  protected showPass = signal(false);
+  protected showPass2 = signal(false);
 
   protected userValid = computed(() =>
     cleanInvisible(this.user()).length > 0
@@ -48,7 +45,7 @@ export class RegisterComponent {
       return;
     }
 
-    this.http.post(`${this.partialUrl}/auth/register`, {
+    this.http.post(`${environment.apiUrl}/auth/register`, {
       username: this.user(),
       password: this.pass()
     }).subscribe({
@@ -59,5 +56,9 @@ export class RegisterComponent {
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  goToHome() {
+    this.router.navigate(['']);
   }
 }
