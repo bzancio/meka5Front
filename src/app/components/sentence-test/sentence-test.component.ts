@@ -302,9 +302,9 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
 
     this.http.post('https://api-meka5.bzancio.com/api/leaderboard/register', null, {
       params: {
-        score: accuracy,
+        score: parseFloat(accuracy.toFixed(2)),
         time: this.selectedTime(),
-        wpm,
+        wpm: parseFloat(wpm.toFixed(2)),
         token: localStorage.getItem('tokenMeka5') ?? '',
         uppercase: this.maintainCase(),
         punctuation: this.includePunctuation()
