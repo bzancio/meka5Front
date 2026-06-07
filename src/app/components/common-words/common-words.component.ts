@@ -1,5 +1,6 @@
 import { Component, inject, signal, HostListener, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DecimalPipe } from '@angular/common';
 
 type CharState = 'pending' | 'correct' | 'incorrect';
 
@@ -19,6 +20,7 @@ export interface TestResult {
 @Component({
   selector: 'app-common-words',
   standalone: true,
+  imports: [DecimalPipe],
   templateUrl: './common-words.component.html',
   styleUrl: './common-words.component.css'
 })
@@ -246,8 +248,8 @@ export class CommonWordsComponent implements OnInit, OnDestroy {
     if (!this.startTime || this.totalChars === 0) return;
 
     const elapsed = (Date.now() - this.startTime) / 60000;
-    const wpm = Math.round(this.correctChars / 5 / elapsed);
-    const accuracy = Math.round((this.correctChars / this.totalChars) * 100);
+    const wpm = this.correctChars / 5 / elapsed;
+    const accuracy = (this.correctChars / this.totalChars) * 100;
 
     const hardestWords = Array.from(this.errorsByWord.entries())
       .sort((a, b) => b[1] - a[1])

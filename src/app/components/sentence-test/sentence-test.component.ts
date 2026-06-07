@@ -1,5 +1,6 @@
 import { Component, inject, signal, HostListener, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 
 type CharState = 'pending' | 'correct' | 'incorrect';
@@ -20,6 +21,7 @@ export interface TestResult {
 @Component({
   selector: 'app-sentence-test',
   standalone: true,
+  imports: [DecimalPipe],
   templateUrl: './sentence-test.component.html',
   styleUrl: './sentence-test.component.css'
 })
