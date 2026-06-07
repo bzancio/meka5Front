@@ -279,8 +279,8 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
     if (!this.startTime || this.totalChars === 0) return;
 
     const elapsed = (Date.now() - this.startTime) / 60000;
-    const wpm = Math.round(this.correctChars / 5 / elapsed);
-    const accuracy = Math.round((this.correctChars / this.totalChars) * 100);
+    const wpm = this.correctChars / 5 / elapsed;
+    const accuracy = (this.correctChars / this.totalChars) * 100;
 
     const hardestWords = Array.from(this.errorsByWord.entries())
       .sort((a, b) => b[1] - a[1])
@@ -299,7 +299,7 @@ export class SentenceTestComponent implements OnInit, OnDestroy {
     this.isFinished.set(true);
 
     this.http.post('https://api-meka5.bzancio.com/api/leaderboard/register', {
-      score: wpm,
+      score: accuracy,
       time: this.selectedTime(),
       wpm,
       token: localStorage.getItem('tokenMeka5'),
