@@ -38,8 +38,9 @@
 }
 
 .header-logo-icon {
-  font-size: 1.4rem;
-  line-height: 1;
+  width: 1.6rem;
+  height: 1.6rem;
+  object-fit: contain;
 }
 
 .header-logo-text {
