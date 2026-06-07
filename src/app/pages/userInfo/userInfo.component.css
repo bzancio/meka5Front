@@ -3,7 +3,8 @@
   margin: 40px auto;
   padding: 20px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card {
@@ -14,61 +15,48 @@
   color: #fff;
   background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
 
-.title {
-  margin: 0 0 10px;
-  font-size: 20px;
-  text-align: center;
-}
-
-.username {
-  margin: 0 0 18px;
-  font-size: 18px;
-  font-weight: 600;
-  text-align: center;
-}
-
-.btn.primary {
+.btn.primary,
+.btn.danger {
+  width: 100%;
   padding: 10px 14px;
-  background: #0078ff;
-  color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn.primary {
+  background: #0078ff;
+  color: white;
 }
 
 .btn.primary:hover {
   background: #005fcc;
 }
 
-.btn.secondary {
-  background: #444;
-  color: #fff;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 8px;
-}
-
-.btn.secondary:hover {
-  background: #333;
-}
-
 .btn.danger {
   background: #cc0000;
   color: #fff;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 8px;
 }
 
 .btn.danger:hover {
   background: #990000;
+}
+
+/* Botón/enlace de volver */
+.btn.link {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn.link:hover {
+  color: #fff;
 }
